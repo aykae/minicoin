@@ -4,5 +4,11 @@
 int main() {
     Block genesis;
 
-    std::cout << genesis.timestamp << std::endl;
+    Block b1;
+    b1.id = 1;
+    b1.prev_block = &genesis;
+
+    std::cout << b1.id << std::endl;
+    std::cout << b1.prev_block->id << std::endl;
+    std::cout << b1.hash() << std::endl;
 }
