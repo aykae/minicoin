@@ -10,7 +10,10 @@
                 "${workspaceFolder}/*.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "-lcrypto++"
+                "-lcrypto",
+                "-lcrypto++",
+                "-lpthread",
+                "-lssl",
 
             ],
             "options": {

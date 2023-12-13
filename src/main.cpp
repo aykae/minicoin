@@ -1,3 +1,6 @@
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+#include "httplib.h"
+
 #include "block.h"
 #include <iostream>
 
@@ -10,8 +13,18 @@ int mine(Block& block) {
     return hash.substr(hash.length()-difficulty, 2) == std::string(difficulty, '0');
 }
 
-int main() {
+void setup_server(httplib::Server& svr) {
+    svr.Get("/hi", [](const httplib::Request &, httplib::Response &res) {
+        res.set_content("Hello World!", "text/plain");
+    });
 
+    svr.listen("localhost", 8080);
+}
+
+int main() {
+    httplib::Server svr;
+    setup_server(svr);
+    
     Block genesis;
 
     Block b1;
