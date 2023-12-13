@@ -12,22 +12,14 @@ int difficulty = 10;
 std::mutex blockMutex;
 
 int mine(Block& block) {
-    // std::lock_guard<std::mutex> lock(blockMutex);
-
     block.increment_nonce();
     std::string hash = block.hash();
-
     return hash.substr(hash.length()-difficulty, 2) == std::string(difficulty, '0');
 }
 
 void setup_server(httplib::Server& svr, Block& block) {
-    svr.Get("/hi", [](const httplib::Request &, httplib::Response &res) {
-        res.set_content("{\"message\": \"Hello World!\"}", "application/json");
-    });
-
     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
-        // std::lock_guard<std::mutex> lock(blockMutex);
-        res.set_content(fmt::format("{{\"message\": \"{}\" }}", block.nonce.load()), "application/json");
+        res.set_content(fmt::format("{{\"message\": \"{}\" }}", block.hash()), "application/json");
     });
 
     svr.listen("localhost", 8080);
@@ -40,7 +32,9 @@ int main() {
 
     #ifdef USING_SERVER
     httplib::Server svr;
-    setup_server(svr, genesis);
+    std::thread server_thread([&] {
+        setup_server(svr, genesis);
+    });
     #endif
     
     Block b1;
@@ -48,12 +42,8 @@ int main() {
     b1.prev_block = &genesis;
 
     std::cout << b1.id << std::endl;
-    // std::cout << b1.prev_block->id << std::endl;
-    // std::cout << b1.hash() << std::endl;
 
-    while (!mine(genesis))  {
-        std::cout << genesis.nonce << std::endl;
-    }
+    while (!mine(genesis))  {}
     b1.prev_hash = genesis.hash();
 
     #ifdef USING_SERVER

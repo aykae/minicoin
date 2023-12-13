@@ -13,8 +13,7 @@ Block::Block() {
 }
 
 void Block::increment_nonce() {
-    nonce.store(nonce.load() + 1);
-    //nonce++;
+    nonce++;
 }
 
 std::string Block::hash()
@@ -22,7 +21,7 @@ std::string Block::hash()
     CryptoPP::SHA256 hash;
     std::string digest;
 
-    std::string message = std::to_string(id) + std::to_string(timestamp) + prev_hash + std::to_string(nonce.load());
+    std::string message = std::to_string(id) + std::to_string(timestamp) + prev_hash + std::to_string(nonce);
 
     CryptoPP::StringSource s(message, true, new CryptoPP::HashFilter(hash, new CryptoPP::HexEncoder(new CryptoPP::StringSink(digest))));
     return digest;
