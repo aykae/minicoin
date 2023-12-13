@@ -21,13 +21,27 @@ void setup_server(httplib::Server& svr) {
         res.set_content("{\"message\": \"Hello World!\"}", "application/json");
     });
 
+    std::string test = "test";
+
+    svr.Get("/mine", [test](const httplib::Request &, httplib::Response &res) {
+        res.set_content(fmt::format("{{\"message\": \"{}\" }}", test), "application/json");
+    });
+
     svr.listen("localhost", 8080);
 }
+
 
 int main() {
 
     #ifdef USING_SERVER
     httplib::Server svr;
+    setup_server(svr);
+
+    std::string test = "test";
+    svr.Get("/mine", [test](const httplib::Request &, httplib::Response &res) {
+        res.set_content(fmt::format("{{\"message\": \"{}\" }}", test), "application/json");
+    });
+
     #endif
     
     Block genesis;
@@ -44,12 +58,7 @@ int main() {
     b1.prev_hash = genesis.hash();
 
     #ifdef USING_SERVER
-    std::string hash = genesis.hash();
-    svr.Get("/mine", [hash](const httplib::Request &, httplib::Response &res) {
-        res.set_content(fmt::format("{{\"message\": \"{}\" }}", hash), "application/json");
-    });
-
-    setup_server(svr);
+    // std::string hash = genesis.hash();
     #else
 
     std::cout << b1.prev_hash << std::endl;
