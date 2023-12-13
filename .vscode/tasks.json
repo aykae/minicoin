@@ -7,14 +7,14 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${workspaceFolder}/*.cpp",
+                "${workspaceFolder}/src/*.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-lcrypto",
                 "-lcrypto++",
                 "-lpthread",
                 "-lssl",
-
+                "-lfmt",
             ],
             "options": {
                 "cwd": "${fileDirname}"

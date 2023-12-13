@@ -3,6 +3,9 @@
 
 #include "block.h"
 #include <iostream>
+#include <fmt/core.h>
+
+#define USING_SERVER
 
 int difficulty = 3;
 
@@ -15,15 +18,17 @@ int mine(Block& block) {
 
 void setup_server(httplib::Server& svr) {
     svr.Get("/hi", [](const httplib::Request &, httplib::Response &res) {
-        res.set_content("Hello World!", "text/plain");
+        res.set_content("{\"message\": \"Hello World!\"}", "application/json");
     });
 
     svr.listen("localhost", 8080);
 }
 
 int main() {
+
+    #ifdef USING_SERVER
     httplib::Server svr;
-    setup_server(svr);
+    #endif
     
     Block genesis;
 
@@ -38,6 +43,18 @@ int main() {
     while (!mine(genesis))  {}
     b1.prev_hash = genesis.hash();
 
+    #ifdef USING_SERVER
+    std::string hash = genesis.hash();
+    svr.Get("/mine", [hash](const httplib::Request &, httplib::Response &res) {
+        res.set_content(fmt::format("{{\"message\": \"{}\" }}", hash), "application/json");
+    });
+
+    setup_server(svr);
+    #else
+
     std::cout << b1.prev_hash << std::endl;
     std::cout << std::string(difficulty, '0') << std::endl;
+    #endif
+
+    return 0;
 }
