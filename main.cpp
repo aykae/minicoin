@@ -1,13 +1,13 @@
 #include "block.h"
 #include <iostream>
 
-int difficulty = 3;
+int difficulty = 10;
 
 int mine(Block& block) {
     block.increment_nonce();
     std::string hash = block.hash();
 
-    return hash.substr(hash.length()-difficulty, 2) == std::string(difficulty, '0');
+    return hash.substr(hash.length()-difficulty, difficulty) == std::string(difficulty, '0');
 }
 
 int main() {
