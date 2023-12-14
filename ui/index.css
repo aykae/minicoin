@@ -1,0 +1,13 @@
+body {
+    background-color: #ffe4c4;
+    color: #371f0f;
+}
+
+#header {
+    text-align: center;
+}
+
+#contents {
+    padding: 5% 0 0 0;
+    margin: 0 20% 0 20%;
+}
