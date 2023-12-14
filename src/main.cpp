@@ -8,13 +8,13 @@
 
 #define USING_SERVER
 
-int difficulty = 10;
+int difficulty = 6;
 std::mutex blockMutex;
 
 int mine(Block& block) {
     block.increment_nonce();
     std::string hash = block.hash();
-    return hash.substr(hash.length()-difficulty, 2) == std::string(difficulty, '0');
+    return hash.substr(hash.length()-difficulty, difficulty) == std::string(difficulty, '0');
 }
 
 void setup_server(httplib::Server& svr, Block& block) {
@@ -35,6 +35,7 @@ int main() {
     std::thread server_thread([&] {
         setup_server(svr, genesis);
     });
+    server_thread.detach();
     #endif
     
     Block b1;
@@ -47,12 +48,14 @@ int main() {
     b1.prev_hash = genesis.hash();
 
     #ifdef USING_SERVER
-    std::string hash = genesis.hash();
+    while (1) {}
     #else
 
+    std::string hash = genesis.hash();
     std::cout << b1.prev_hash << std::endl;
-    std::cout << std::string(difficulty, '0') << std::endl;
     #endif
+
+
 
     return 0;
 }
