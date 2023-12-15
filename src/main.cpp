@@ -43,6 +43,7 @@ int main() {
         Block* block = blockchain.create_block();
 
         while(!mine(block)) {continue;}
+        blockchain.add_block(block);
         std::cout << "Block Number " << blockchain.get_length()-1 << ": " << blockchain.get_prev_hash() << std::endl;
     }
 
