@@ -3,11 +3,12 @@
 
 class Block {
     public:
+        Block();
+
         int id;
         std::string prev_hash;
         Block* prev_block;
 
-        Block();
         std::string hash();
         void increment_nonce();
     

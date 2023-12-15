@@ -6,9 +6,9 @@
 #include <fmt/core.h>
 #include <mutex>
 
-#define USING_SERVER
+// #define USING_SERVER
 
-int difficulty = 6;
+int difficulty = 4;
 std::mutex blockMutex;
 
 int mine(Block& block) {
