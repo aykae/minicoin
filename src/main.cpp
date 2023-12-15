@@ -1,25 +1,25 @@
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "httplib.h"
 
-#include "block.h"
+#include "blockchain.h"
 #include <iostream>
 #include <fmt/core.h>
 #include <mutex>
 
 // #define USING_SERVER
 
-int difficulty = 4;
+int difficulty = 5;
 std::mutex blockMutex;
 
-int mine(Block& block) {
-    block.increment_nonce();
-    std::string hash = block.hash();
+int mine(Block* block) {
+    block->increment_nonce();
+    std::string hash = block->compute_hash();
     return hash.substr(hash.length()-difficulty, difficulty) == std::string(difficulty, '0');
 }
 
-void setup_server(httplib::Server& svr, Block& block) {
+void setup_server(httplib::Server& svr, Block* block) {
     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
-        res.set_content(fmt::format("{{\"message\": \"{}\" }}", block.hash()), "application/json");
+        res.set_content(fmt::format("{{\"message\": \"{}\" }}", block->compute_hash()), "application/json");
     });
 
     svr.listen("localhost", 8080);
@@ -28,8 +28,6 @@ void setup_server(httplib::Server& svr, Block& block) {
 
 int main() {
 
-    Block genesis;
-
     #ifdef USING_SERVER
     httplib::Server svr;
     std::thread server_thread([&] {
@@ -37,22 +35,22 @@ int main() {
     });
     server_thread.detach();
     #endif
-    
-    Block b1;
-    b1.id = 1;
-    b1.prev_block = &genesis;
 
-    std::cout << b1.id << std::endl;
+    Blockchain blockchain;
+    std::cout << "Blockchain generated." << std::endl;
 
-    while (!mine(genesis))  {}
-    b1.prev_hash = genesis.hash();
+    while (1) {
+        Block* block = blockchain.create_block();
+
+        while(!mine(block)) {continue;}
+        std::cout << "Block Number " << blockchain.get_length()-1 << ": " << blockchain.get_prev_hash() << std::endl;
+    }
+
+
 
     #ifdef USING_SERVER
     while (1) {}
     #else
-
-    std::string hash = genesis.hash();
-    std::cout << b1.prev_hash << std::endl;
     #endif
 
 

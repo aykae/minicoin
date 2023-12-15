@@ -1,18 +1,18 @@
 #include <string>
-// #include <atomic>
 
 class Block {
     public:
-        Block();
+        Block(const int id, Block* latest_block);
 
-        int id;
-        std::string prev_hash;
-        Block* prev_block;
-
-        std::string hash();
+        std::string compute_hash();
+        std::string get_prev_hash();
         void increment_nonce();
     
     private:
-        int nonce;
+        int id;
         int timestamp;
+        int nonce;
+
+        std::string prev_hash;
+        Block* prev_block;
 };

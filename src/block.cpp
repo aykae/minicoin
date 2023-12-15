@@ -1,22 +1,23 @@
 #include "block.h"
+
 #include <chrono>
 #include <cryptopp/sha.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/filters.h>
 
-Block::Block() {
-    id = 0;
+Block::Block(const int id, Block* latest_block){
+    this->id = id;
     timestamp = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    prev_hash = "";
-    prev_block = nullptr;
     nonce = 0;
+
+    prev_hash = "";
+    if (latest_block != nullptr) {
+        prev_hash = latest_block->get_prev_hash();
+    }
+    prev_block = latest_block;
 }
 
-void Block::increment_nonce() {
-    nonce++;
-}
-
-std::string Block::hash()
+std::string Block::compute_hash()
 {
     CryptoPP::SHA256 hash;
     std::string digest;
@@ -25,4 +26,12 @@ std::string Block::hash()
 
     CryptoPP::StringSource s(message, true, new CryptoPP::HashFilter(hash, new CryptoPP::HexEncoder(new CryptoPP::StringSink(digest))));
     return digest;
+}
+
+std::string Block::get_prev_hash() {
+    return prev_hash;
+}
+
+void Block::increment_nonce() {
+    nonce++;
 }
