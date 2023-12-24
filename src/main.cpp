@@ -6,7 +6,7 @@
 #include <fmt/core.h>
 #include <mutex>
 
-// #define USING_SERVER
+#define USING_SERVER
 
 int difficulty = 5;
 std::mutex blockMutex;
@@ -17,9 +17,9 @@ int mine(Block* block) {
     return hash.substr(hash.length()-difficulty, difficulty) == std::string(difficulty, '0');
 }
 
-void setup_server(httplib::Server& svr, Block* block) {
+void setup_server(httplib::Server& svr, Blockchain* blockchain) {
     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
-        res.set_content(fmt::format("{{\"message\": \"{}\" }}", block->compute_hash()), "application/json");
+        res.set_content(fmt::format("{{\"hash\": \"{}\", \"blen\": \"{}\"}}", blockchain->get_prev_hash(), blockchain->get_length()), "application/json");
     });
 
     svr.listen("localhost", 8080);
@@ -28,33 +28,32 @@ void setup_server(httplib::Server& svr, Block* block) {
 
 int main() {
 
+    Blockchain blockchain;
+
     #ifdef USING_SERVER
     httplib::Server svr;
     std::thread server_thread([&] {
-        setup_server(svr, genesis);
+        setup_server(svr, &blockchain);
     });
     server_thread.detach();
-    #endif
-
-    Blockchain blockchain;
+    #else
     std::cout << "Blockchain generated." << std::endl;
+    #endif
 
     while (1) {
         Block* block = blockchain.create_block();
-
         while(!mine(block)) {continue;}
         blockchain.add_block(block);
+        #ifdef USING_SERVER
+        #else
         std::cout << "Block Number " << blockchain.get_length()-1 << ": " << blockchain.get_prev_hash() << std::endl;
+        #endif
     }
-
-
 
     #ifdef USING_SERVER
     while (1) {}
     #else
     #endif
-
-
 
     return 0;
 }

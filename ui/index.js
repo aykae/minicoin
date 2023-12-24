@@ -14,8 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Request sent.");
                 const mineObj = await response.json();
 
-                document.querySelector("#mine-hash").innerText = mineObj["message"];
-                hash = mineObj["message"];
+                document.querySelector("#blockchain-length").innerText = mineObj["blen"];
+                document.querySelector("#mine-hash").innerText = mineObj["hash"];
+                hash = mineObj["hash"];
 
             } catch (error) {
                 console.log("Error fetching hash");
