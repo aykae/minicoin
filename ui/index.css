@@ -7,7 +7,21 @@ body {
     text-align: center;
 }
 
-#contents {
-    padding: 5% 0 0 0;
-    margin: 0 20% 0 20%;
+.block-container {
+    margin: 5% 0 0 0;
+    text-align: center;
+}
+
+.block {
+    width: 20%;
+    display: inline-block;
+
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.contents {
+    text-align: left;
+    padding: 5%;
+    /* margin: 0 20% 0 20%; */
 }
