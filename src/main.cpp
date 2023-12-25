@@ -26,6 +26,7 @@ int mine(Block* block) {
 //     svr.listen("localhost", 8080);
 // }
 
+//Note: is a snapchat of the block pointer taken upon initializaiton? I'm not sure why this endpoint wouldn't update as the data to which the pointer points changes
 void create_block_endpoint(httplib::Server& svr, Block* block) {
     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) { 
         res.set_content(fmt::format("{{\"hash\": \"{}\", \"timestamp\": \"{}\"}}", block->compute_hash(), block->get_timestamp()), "application/json");
@@ -49,13 +50,14 @@ int main() {
         Block* block = blockchain.create_block();
 
         #ifdef USING_SERVER
-
         create_block_endpoint(svr, block);
-        std::thread server_thread([&] {
-            while(!mine(block)) {continue;}
-            blockchain.add_block(block);
-        });
-        server_thread.join();
+
+        // std::thread server_thread([&] {
+        // });
+        // server_thread.detach();
+
+        while(!mine(block)) {continue;}
+        blockchain.add_block(block);
         std::cout << "Added new block." << std::endl;
 
         #else
