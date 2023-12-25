@@ -5,6 +5,7 @@ class Block {
         Block(const int id, Block* latest_block);
 
         std::string compute_hash();
+        int get_timestamp();
         std::string get_prev_hash();
         void increment_nonce();
     

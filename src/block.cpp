@@ -28,6 +28,10 @@ std::string Block::compute_hash()
     return digest;
 }
 
+int Block::get_timestamp() {
+    return timestamp;
+}
+
 std::string Block::get_prev_hash() {
     return prev_hash;
 }
