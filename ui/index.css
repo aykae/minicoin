@@ -20,6 +20,10 @@ body {
     text-align: center;
 }
 
+#btn-container {
+    text-align: center;
+}
+
 .block-container {
     margin: 5% 0 0 0;
     display: flex;
@@ -30,7 +34,6 @@ body {
 .block {
     width: 20%;
     margin: 1% 0 1% 0;
-    /* display: inline-block; */
 
     background-color: rgb(220, 246, 195);
 

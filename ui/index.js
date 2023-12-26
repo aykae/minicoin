@@ -1,11 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const getBtn = document.querySelector("#mine-btn");
     getBtn.addEventListener("click", async () => {
-        prevHash = "0";
-        hash = "";
-        while (hash != prevHash) {
-            prevHash = hash;
-
+        blockNum = 0;
+        while (1) {
             try {
                 const response = await fetch("http://localhost:8080/mine",
                     {
@@ -14,47 +11,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Request sent.");
                 const mineObj = await response.json();
                 console.log(mineObj);
+                
+                if (mineObj["number"] != blockNum) {
+                    const blockDiv = document.querySelector(".block");
+                    if (blockDiv) {
+                        const blockDupe = blockDiv.cloneNode(true);
 
-                const blockDiv = document.querySelector(".block");
-                if (blockDiv) {
-                    console.log("In if statement");
-                    blockDiv.querySelector("#number").innerText = mineObj["number"];
-                    blockDiv.querySelector("#timestamp").innerText = mineObj["timestamp"];
-                    blockDiv.querySelector("#hash").innerText = mineObj["hash"];
-                    // const duplicateDiv = divToDuplicate.cloneNode(true);
-                    // duplicateDiv.querySelector("#number").innerText = blockNum++;
-                    // console.log("Duplicated Block.")
-                    // document.querySelector(".block-container").appendChild(duplicateDiv);
-                } else {
-                    console.log("No element with id 'block' found.");
+                        blockDupe.style.display = "block";
+                        blockNum = mineObj["number"];
+                        blockDupe.querySelector("#number").innerText = blockNum;
+                        blockDupe.querySelector("#timestamp").innerText = mineObj["timestamp"];
+                        blockDupe.querySelector("#hash").innerText = mineObj["hash"];
+
+                        console.log("Duplicated Block.")
+                        document.querySelector(".block-container").prepend(blockDupe);
+                    }
+                    else {
+                        console.log("No element with id 'block' found.");
+                    }
                 }
-
-                hash = mineObj["hash"];
-
-            } catch (error) {
+            }
+            catch (error) {
                 console.log("Error fetching hash");
             }
 
             //Hacky time.wait()
-            timer = 0
-            while (timer < 1000000000) {
+            timer = 0;
+            while (timer < 100000000) {
                 timer++;
-            }
-        }
-    });
-
-    blockNum = 2;
-
-    document.addEventListener("keydown", (event) => {
-        if (event.key === " ") {
-            const divToDuplicate = document.querySelector(".block");
-            if (divToDuplicate) {
-                const duplicateDiv = divToDuplicate.cloneNode(true);
-                duplicateDiv.querySelector("#number").innerText = blockNum++;
-                console.log("Duplicated Block.")
-                document.querySelector(".block-container").appendChild(duplicateDiv);
-            } else {
-                console.log("No element with id 'block' found.");
             }
         }
     });
