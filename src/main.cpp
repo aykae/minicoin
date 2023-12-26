@@ -22,7 +22,7 @@ void setup_server(httplib::Server& svr, Blockchain* blockchain) {
     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
         Block* candidate = blockchain->get_candidate_block();
         if (candidate) {
-            res.set_content(fmt::format("{{\"hash\": \"{}\", \"blockNum\": \"{}\", \"timestamp\": \"{}\"}}", candidate->get_hash(), candidate->get_number(), candidate->get_timestamp()), "application/json");
+            res.set_content(fmt::format("{{\"hash\": \"{}\", \"number\": \"{}\", \"timestamp\": \"{}\"}}", candidate->get_hash(), candidate->get_number(), candidate->get_timestamp()), "application/json");
         }
         else {
             res.set_content("{\"message\": \"No candidate block currently exists.\"}", "application/json");
