@@ -23,6 +23,13 @@ Block* Blockchain::create_block() {
     return block;
 }
 
+Block* Blockchain::get_candidate_block() {
+    if (candidate_block != nullptr) {
+        return candidate_block;
+    }
+    return nullptr;
+}
+
 int Blockchain::add_block() {
     latest_block = candidate_block;
     length++;

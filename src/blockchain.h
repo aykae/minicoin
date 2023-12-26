@@ -8,6 +8,7 @@ class Blockchain {
         int get_length();
         std::string get_prev_hash();
         Block* create_block();
+        Block* get_candidate_block();
         int add_block();
 
     private:

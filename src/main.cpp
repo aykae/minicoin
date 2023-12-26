@@ -11,6 +11,7 @@
 int difficulty = 5;
 std::mutex blockMutex;
 
+//eventually move to miner class
 int mine(Block* block) {
     block->increment_nonce();
     std::string hash = block->compute_hash();
@@ -19,7 +20,18 @@ int mine(Block* block) {
 
 void setup_server(httplib::Server& svr, Blockchain* blockchain) {
     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
-        res.set_content(fmt::format("{{\"hash\": \"{}\", \"blen\": \"{}\", \"timestamp\": \"{}\"}}", blockchain->get_prev_hash(), blockchain->get_length()), "application/json");
+        Block* candidate = blockchain->get_candidate_block();
+        if (candidate) {
+            res.set_content(fmt::format("{{\"hash\": \"{}\", \"blockNum\": \"{}\", \"timestamp\": \"{}\"}}", candidate->get_hash(), candidate->get_number(), candidate->get_timestamp()), "application/json");
+        }
+        else {
+            res.set_content("{\"message\": \"No candidate block currently exists.\"}", "application/json");
+        }
+        // try {
+        //     res.set_content(fmt::format("{{\"hash\": \"{}\", \"blen\": \"{}\", \"timestamp\": \"{}\"}}", blockchain->get_prev_hash(), blockchain->get_length()), "application/json");
+        // } catch (e) {
+        //     res.set_content("{\"message\": \"error\"}", "application/json");
+        // }
     });
 
     svr.listen("localhost", 8080);
