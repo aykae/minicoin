@@ -42,22 +42,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+
+    blockNum = 2;
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === " ") {
+            const divToDuplicate = document.querySelector(".block");
+            if (divToDuplicate) {
+                const duplicateDiv = divToDuplicate.cloneNode(true);
+                duplicateDiv.querySelector("#number").innerText = blockNum++;
+                console.log("Duplicated Block.")
+                document.querySelector(".block-container").appendChild(duplicateDiv);
+            } else {
+                console.log("No element with id 'block' found.");
+            }
+        }
+    });
 });
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     blockNum = 2;
-
-//     document.addEventListener("keydown", (event) => {
-//         if (event.key === " ") {
-//             const divToDuplicate = document.querySelector(".block");
-//             if (divToDuplicate) {
-//                 const duplicateDiv = divToDuplicate.cloneNode(true);
-//                 duplicateDiv.querySelector("#number").innerText = blockNum++;
-//                 console.log("Duplicated Block.")
-//                 document.querySelector(".block-container").appendChild(duplicateDiv);
-//             } else {
-//                 console.log("No element with id 'block' found.");
-//             }
-//         }
-//     });
-// });

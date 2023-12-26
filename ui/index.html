@@ -2,6 +2,7 @@
 
 <head>
     <title>minicoin</title>
+    <link rel="stylesheet" href="bootstrap.css">
     <link rel="stylesheet" href="index.css">
     <script src="index.js"></script>
 </head>
@@ -9,11 +10,12 @@
 <body>
     <div id="header">
         <h1>minicoin</h1>
-        <p>Minicoin is a lightweight implementation of Bitcoin in C++.</p>
+        <p>A lightweight implementation of the Bitcoin protocol in C++.</p>
         <p>Created by AK Rai.</p>
     </div>
 
     <div class="block-container">
+        <button type="button" class="btn btn-success" id="mine-btn">Mine</button>
         <div class="block">
             <div class="contents">
                 <p>Block #<span id="number">1</span></p>
@@ -21,12 +23,6 @@
                 <p>Hash: <span id="hash">0x0000000...0000000</span></p>
             </div>
         </div>
-    </div>
-
-    <div id="contents">
-        <!-- <p>Blockchain Length: <span id="blockchain-length">0</span></p>
-        <p>Mining Block: <span id="mine-hash">0x0000000000000</span></p> -->
-        <button type="button" class="btn btn-success" id="mine-btn">Mine</button>
     </div>
 
 </body>
