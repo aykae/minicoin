@@ -12,19 +12,18 @@ int difficulty = 5;
 std::mutex blockMutex;
 
 int mine(Block* block) {
-    // std::cout << "In thread." << std::endl;
     block->increment_nonce();
     std::string hash = block->compute_hash();
     return hash.substr(hash.length()-difficulty, difficulty) == std::string(difficulty, '0');
 }
 
-// void setup_server(httplib::Server& svr, Blockchain* blockchain) {
-//     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
-//         res.set_content(fmt::format("{{\"hash\": \"{}\", \"blen\": \"{}\", \"timestamp\": \"{}\"}}", blockchain->get_prev_hash(), blockchain->get_length()), "application/json");
-//     });
+void setup_server(httplib::Server& svr, Blockchain* blockchain) {
+    svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
+        res.set_content(fmt::format("{{\"hash\": \"{}\", \"blen\": \"{}\", \"timestamp\": \"{}\"}}", blockchain->get_prev_hash(), blockchain->get_length()), "application/json");
+    });
 
-//     svr.listen("localhost", 8080);
-// }
+    svr.listen("localhost", 8080);
+}
 
 //Note: is a snapchat of the block pointer taken upon initializaiton? I'm not sure why this endpoint wouldn't update as the data to which the pointer points changes
 void create_block_endpoint(httplib::Server& svr, Block* block) {
@@ -35,29 +34,30 @@ void create_block_endpoint(httplib::Server& svr, Block* block) {
     svr.listen("localhost", 8080);
 }
 
-
 int main() {
 
     Blockchain blockchain;
 
     #ifdef USING_SERVER
+
     httplib::Server svr;
+    std::thread server_thread([&] {
+        setup_server(svr, &blockchain);
+    });
+    server_thread.detach();
+
     #else
-    std::cout << "Blockchain generated." << std::endl;
     #endif
+
+    std::cout << "Blockchain generated." << std::endl;
 
     while (1) {
         Block* block = blockchain.create_block();
 
         #ifdef USING_SERVER
-        create_block_endpoint(svr, block);
-
-        // std::thread server_thread([&] {
-        // });
-        // server_thread.detach();
 
         while(!mine(block)) {continue;}
-        blockchain.add_block(block);
+        blockchain.add_block();
         std::cout << "Added new block." << std::endl;
 
         #else
