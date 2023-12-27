@@ -11,10 +11,10 @@ Block::Block(const int number, Block* latest_block){
     nonce = 0;
     hash = "";
 
-    prev_hash = "";
     if (latest_block != nullptr) {
-        prev_hash = latest_block->get_prev_hash();
+        prev_hash = latest_block->get_hash();
     }
+
     prev_block = latest_block;
 }
 

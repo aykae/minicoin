@@ -22,16 +22,11 @@ void setup_server(httplib::Server& svr, Blockchain* blockchain) {
     svr.Get("/mine", [&](const httplib::Request &, httplib::Response &res) {
         Block* candidate = blockchain->get_candidate_block();
         if (candidate) {
-            res.set_content(fmt::format("{{\"hash\": \"{}\", \"number\": \"{}\", \"timestamp\": \"{}\"}}", candidate->get_hash(), candidate->get_number(), candidate->get_timestamp()), "application/json");
+            res.set_content(fmt::format("{{\"hash\": \"{}\", \"number\": \"{}\", \"timestamp\": \"{}\", \"prevHash\": \"{}\"}}", candidate->get_hash(), candidate->get_number(), candidate->get_timestamp(), candidate->get_prev_hash()), "application/json");
         }
         else {
             res.set_content("{\"message\": \"No candidate block currently exists.\"}", "application/json");
         }
-        // try {
-        //     res.set_content(fmt::format("{{\"hash\": \"{}\", \"blen\": \"{}\", \"timestamp\": \"{}\"}}", blockchain->get_prev_hash(), blockchain->get_length()), "application/json");
-        // } catch (e) {
-        //     res.set_content("{\"message\": \"error\"}", "application/json");
-        // }
     });
 
     svr.listen("localhost", 8080);
@@ -67,24 +62,13 @@ int main() {
         Block* block = blockchain.create_block();
 
         #ifdef USING_SERVER
-
-        while(!mine(block)) {continue;}
-        blockchain.add_block();
-        std::cout << "Added new block." << std::endl;
-
         #else
+        #endif
 
         while(!mine(block)) {continue;}
-        blockchain.add_block(block);
-        std::cout << "Block Number " << blockchain.get_length()-1 << ": " << blockchain.get_prev_hash() << std::endl;
-
-        #endif
+        std::cout << "Block Number " << blockchain.get_candidate_block()->get_number() << ": " << blockchain.get_candidate_block()->get_prev_hash() << std::endl;
+        blockchain.add_block();
     }
-
-    #ifdef USING_SERVER
-    while (1) {}
-    #else
-    #endif
 
     return 0;
 }
