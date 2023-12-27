@@ -12,12 +12,30 @@ html {
 /* */
 
 body {
-    background-color: #ffe4c4;
-    color: #4b2b15;
+    min-height: 100vh;
+    /* background: linear-gradient(45deg, #ffe4c4, #fcc480); */
+    background: #F9E0BB;
+    color: #884A39
+}
+
+a {
+    color: #884A39;
+    font-weight: bold;
+    text-decoration: none;
+} 
+
+a:hover {
+    color: #C38154;
 }
 
 #header {
     text-align: center;
+}
+
+#prompt {
+    text-align: center;
+    margin: 5% 0 2% 0;
+    font-weight: bold;
 }
 
 #btn-container {
@@ -25,7 +43,7 @@ body {
 }
 
 .block-container {
-    margin: 5% 0 0 0;
+    margin: 0 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,20 +54,28 @@ body {
 }
 
 .block {
-    width: 20%;
+    width: 25%;
     margin: 1% 0 1% 0;
 
     background: var(--gradient);
-    background: rgba(255, 0, 0, 1.0);
+    background: #FFC26F;
 
     /* border: 2px solid var(--gradient); */
     border-radius: 5px;
-    box-shadow: 10px 10px 0px 0px rgba(0,0,0,1.0);
+    box-shadow: 10px 10px 0px 0px #C38154;
 
 }
 
-.contents {
+.block-contents {
     text-align: left;
     padding: 5%;
     /* margin: 0 20% 0 20%; */
+}
+
+.block-contents p {
+    font-weight: bold;
+}
+
+.block-contents span {
+    font-weight: normal;
 }
