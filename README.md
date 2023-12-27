@@ -2,8 +2,11 @@
 A lightweight Bitcoin implementation in C++
 
 # TODO
+- [ ] Press 'Enter' to pause mining doesn't work
+- [ ] Remove bottom most dangling chain, and also remove placeholder block
+- [ ] Change color of mining node to show incompleteness
+
 - [ ] Clean up UI for v0.1 twitter demo
-- [ ] Change 0-check from end of hash to beginning
 - [ ] Difficulty adjustment
 - [ ] Implement wallets
 
@@ -20,4 +23,5 @@ A lightweight Bitcoin implementation in C++
 [Bitcoin Whitepaper](https://bitcoin.org/bitcoin.pdf)
 
 # Competed Tasks
- - [X] Implement proof of work function
+- [x] Change 0-check from end of hash to beginning
+- [X] Implement proof of work function

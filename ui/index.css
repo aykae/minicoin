@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
     /* background: linear-gradient(45deg, #ffe4c4, #fcc480); */
     background: #F9E0BB;
-    color: #884A39
+    color: #884A39;
 }
 
 a {
@@ -32,14 +32,10 @@ a:hover {
     text-align: center;
 }
 
-#prompt {
+.page-header {
     text-align: center;
-    margin: 5% 0 2% 0;
-    font-weight: bold;
-}
-
-#btn-container {
-    text-align: center;
+    margin: 2% 0 2% 0;
+    /* font-weight: bold; */
 }
 
 .block-container {
