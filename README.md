@@ -2,9 +2,9 @@
 A lightweight Bitcoin implementation in C++
 
 # TODO
- - [ ] Implement Blockchain UI
- - [X] Implement proof of work function
-    - [ ] Difficulty adjustment
+- [ ] Clean up UI for v0.1 twitter demo
+- [ ] Change 0-check from end of hash to beginning
+- [ ] Difficulty adjustment
 - [ ] Implement wallets
 
 # FUTURE
@@ -18,3 +18,6 @@ A lightweight Bitcoin implementation in C++
 
 # References
 [Bitcoin Whitepaper](https://bitcoin.org/bitcoin.pdf)
+
+# Competed Tasks
+ - [X] Implement proof of work function

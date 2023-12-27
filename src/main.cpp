@@ -14,8 +14,8 @@ std::mutex blockMutex;
 //eventually move to miner class
 int mine(Block* block) {
     block->increment_nonce();
-    std::string hash = block->compute_hash();
-    return hash.substr(hash.length()-difficulty, difficulty) == std::string(difficulty, '0');
+    block->compute_hash();
+    return block->get_hash().substr(0, difficulty) == std::string(difficulty, '0');
 }
 
 void setup_server(httplib::Server& svr, Blockchain* blockchain) {

@@ -31,14 +31,21 @@ body {
     align-items: center;
 }
 
+:root {
+    --gradient: linear-gradient(45deg, rgb(220, 246, 195), rgb(150, 200, 200));
+}
+
 .block {
     width: 20%;
     margin: 1% 0 1% 0;
 
-    background-color: rgb(220, 246, 195);
+    background: var(--gradient);
+    background: rgba(255, 0, 0, 1.0);
 
-    border: 2px solid black;
+    /* border: 2px solid var(--gradient); */
     border-radius: 5px;
+    box-shadow: 10px 10px 0px 0px rgba(0,0,0,1.0);
+
 }
 
 .contents {
