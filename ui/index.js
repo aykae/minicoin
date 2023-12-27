@@ -1,3 +1,8 @@
+function formatHash(hash) {
+    const formattedLength = 28;
+    return hash.substring(0, formattedLength/2) + "..." + hash.substring(hash.length - formattedLength/2);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     isMining = false;
     document.addEventListener("keypress", async (event) => {
@@ -23,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         // Set prev block's winning hash
                         if (blockClone) {
-                            blockClone.querySelector("#hash").innerText = mineObj["prevHash"];
+                            blockClone.querySelector("#hash").innerText = formatHash(mineObj["prevHash"])
                         }
                         
                         // Create new block
@@ -34,15 +39,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         blockNum = mineObj["number"];
                         blockClone.querySelector("#number").innerText = blockNum;
                         blockClone.querySelector("#timestamp").innerText = mineObj["timestamp"];
-                        blockClone.querySelector("#hash").innerText = mineObj["hash"];
+
+                        blockClone.querySelector("#hash").innerText = formatHash(mineObj["hash"]);
                         
-                        //Prepend block to chain
-                        chainClone = chain.cloneNode(false);
-                        document.querySelector(".block-container").prepend(chainClone);
+                        if (blockNum > 1) {
+                            //Prepend block to chain
+                            chainClone = chain.cloneNode(false);
+                            chainClone.style.display = "block";
+                            document.querySelector(".block-container").prepend(chainClone);
+                        }
+
                         document.querySelector(".block-container").prepend(blockClone);
                     }
                     else {
-                        blockClone.querySelector("#hash").innerText = mineObj["hash"];
+                        blockClone.querySelector("#hash").innerText = formatHash(mineObj["hash"]);
                     }
                 }
                 catch (error) {

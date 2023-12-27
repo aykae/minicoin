@@ -39,7 +39,7 @@ a:hover {
 }
 
 .block-container {
-    margin: 0 0 0 0;
+    margin: 0 0 5% 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,4 +74,13 @@ a:hover {
 
 .block-contents span {
     font-weight: normal;
+}
+
+#chain {
+    height: 40px;
+    width: 5px;
+    background: #884A39;
+    opacity: 100%;
+
+    display: none; /* Hide chain by default */
 }
