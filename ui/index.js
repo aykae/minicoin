@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         // Set prev block's winning hash
                         if (blockClone) {
-                            blockClone.querySelector("#hash").innerText = formatHash(mineObj["prevHash"])
+                            blockClone.querySelector("#hash").innerText = formatHash(mineObj["prevHash"]);
+                            blockClone.classList.remove("block-unmined");
                         }
                         
                         // Create new block
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 //Hacky time.wait() to slowdown API calls
                 timer = 0;
-                while (timer < 100000000) {
+                while (timer < 1000000) {
                     timer++;
                 }
             }
