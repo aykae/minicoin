@@ -1,6 +1,8 @@
 # Minicoin
 A lightweight Bitcoin implementation in C++
 
+Check out an early demo, [here](https://x.com/aykae_r/status/1740359971630702920?s=20).
+
 # TODO
 - [ ] Press 'Enter' to pause mining doesn't work
 - [ ] Remove bottom most dangling chain, and also remove placeholder block
